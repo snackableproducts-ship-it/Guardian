@@ -1,0 +1,43 @@
+# Guardian anticheat configuration
+prefix: "&8[&bGuardian&8] "
+
+messages:
+  alert: "&f%player% &7failed &c%check% &8(&7%info%&8) &7VL &c%vl%&7/&c%max% &8| &7%ping%ms"
+
+alerts:
+  cooldown-ms: 750        # min time between alerts for the same player+check
+  log-to-file: true       # writes plugins/Guardian/violations.log
+
+punishments:
+  enabled: true
+  # Runs from console when a check reaches its max-vl.
+  # Placeholders: %player% %check% %vl%
+  # For bans use e.g.:  ban %player% Cheating (%check%)
+  commands:
+    - "kick %player% &cUnfair advantage detected (%check%)"
+
+decay:
+  interval-seconds: 30    # every N seconds every violation level drops by 'amount'
+  amount: 1.0
+
+lag:
+  min-tps: 17.0           # movement checks pause while TPS is below this (Aternos lags!)
+
+# Per-check settings. Add 'commands:' under a check to override punishments.
+checks:
+  speed:       { enabled: true, max-vl: 15, max-ground: 0.38, max-air: 0.68, buffer: 5 }
+  fly:         { enabled: true, max-vl: 12, tolerance: 0.10 }
+  nofall:      { enabled: true, max-vl: 10 }
+  jesus:       { enabled: true, max-vl: 12 }
+  step:        { enabled: true, max-vl: 10 }
+  phase:       { enabled: true, max-vl: 8 }
+  timer:       { enabled: true, max-vl: 15, threshold-ms: 250, max-credit-ms: 1500 }
+  reach:       { enabled: true, max-vl: 10, max-distance: 3.0, leeway: 0.45 }
+  killaura:    { enabled: true, max-vl: 10, max-angle: 85, max-targets: 3 }
+  hitwall:     { enabled: true, max-vl: 10 }
+  autoclicker: { enabled: true, max-vl: 8, max-cps: 22, min-std-ms: 8 }
+  blockreach:  { enabled: true, max-vl: 10, max-distance: 5.6 }
+  blockwall:   { enabled: true, max-vl: 10 }
+  nuker:       { enabled: true, max-vl: 8, max-per-second: 12 }   # disable if you use vein-miner / tree-chopper plugins
+  fastplace:   { enabled: true, max-vl: 10, max-per-second: 9 }
+  scaffold:    { enabled: true, max-vl: 12 }

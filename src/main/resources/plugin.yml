@@ -1,0 +1,20 @@
+name: Guardian
+version: 1.0.0
+main: me.guardian.GuardPlugin
+api-version: '1.21'
+description: Lightweight anticheat for Spigot
+commands:
+  guardian:
+    description: Guardian anticheat command
+    aliases: [gac]
+    usage: /guardian <alerts|status|info|reset|reload>
+permissions:
+  guardian.admin:
+    description: Use admin subcommands
+    default: op
+  guardian.alerts:
+    description: Receive cheat alerts
+    default: op
+  guardian.bypass:
+    description: Bypass all checks
+    default: false
