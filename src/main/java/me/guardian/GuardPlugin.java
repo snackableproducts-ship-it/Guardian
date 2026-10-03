@@ -32,6 +32,7 @@ public class GuardPlugin extends JavaPlugin implements Listener, CommandExecutor
     private volatile long lastLagSpike = 0;
     private long lastTickNanos = System.nanoTime();
     private volatile double tps = 20.0;
+    private long lastTpsNanos = System.nanoTime();
 
     @Override
     public void onEnable() {
@@ -57,12 +58,12 @@ public class GuardPlugin extends JavaPlugin implements Listener, CommandExecutor
             if (gapMs > 110) lastLagSpike = System.currentTimeMillis();
         }, 1L, 1L);
 
+        // Measure TPS ourselves: 100 ticks should take 5 seconds
         getServer().getScheduler().runTaskTimer(this, () -> {
-            try {
-                double[] t = getServer().spigot().getTPS();
-                if (t != null && t.length > 0) tps = Math.min(20.0, t[0]);
-            } catch (Throwable ignored) {
-            }
+            long n = System.nanoTime();
+            double seconds = (n - lastTpsNanos) / 1_000_000_000.0;
+            lastTpsNanos = n;
+            if (seconds > 0) tps = Math.min(20.0, 100.0 / seconds);
         }, 100L, 100L);
 
         for (Player p : Bukkit.getOnlinePlayers()) data(p);
